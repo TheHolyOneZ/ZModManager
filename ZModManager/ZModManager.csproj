@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>ZModManager</RootNamespace>
+    <AssemblyName>ZModManager</AssemblyName>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseWindowsForms>true</UseWindowsForms>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>x64</Platforms>
+    <Configurations>Debug;Release</Configurations>
+    <ApplicationIcon>app_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <!-- Embed the compiled bootstrap DLL as a managed resource.
+       The file is produced by building ZModManager.Bootstrap (Release|x64).
+       When the resource is absent the app still runs — BootstrapService will
+       show a user-friendly error explaining how to build the C++ project. -->
+  <ItemGroup>
+    <Resource Include="app_icon.ico" />
+    <Resource Include="app_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Bootstrap\version.dll"
+                      Condition="Exists('Resources\Bootstrap\version.dll')"
+                      LogicalName="ZModManager.Resources.Bootstrap.version.dll" />
+  </ItemGroup>
+
+</Project>

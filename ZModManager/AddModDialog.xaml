@@ -1,0 +1,191 @@
+<Window x:Class="ZModManager.AddModDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="Mod"
+        Width="500"
+        SizeToContent="Height"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BrBgMain}">
+
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="44"
+                            ResizeBorderThickness="0"
+                            GlassFrameThickness="0"
+                            UseAeroCaptionButtons="False"/>
+    </shell:WindowChrome.WindowChrome>
+
+    <Border BorderBrush="{StaticResource BrBorder}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="44"/>   <!-- title bar -->
+                <RowDefinition Height="*"/>    <!-- form -->
+                <RowDefinition Height="Auto"/> <!-- footer -->
+            </Grid.RowDefinitions>
+
+            <!-- ── Title bar ─────────────────────────────────────────────── -->
+            <Border Grid.Row="0"
+                    Background="{StaticResource BrBgDeep}"
+                    BorderBrush="{StaticResource BrBorder}"
+                    BorderThickness="0,0,0,1">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
+                        <Border Width="8" Height="8" CornerRadius="4"
+                                Background="{StaticResource BrAccent}" Margin="0,0,10,0">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#7C6FF7" BlurRadius="8" ShadowDepth="0" Opacity="0.9"/>
+                            </Border.Effect>
+                        </Border>
+                        <TextBlock x:Name="TitleText" Text="Add Mod"
+                                   FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{StaticResource BrText}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Close -->
+                    <Button HorizontalAlignment="Right"
+                            Width="44" Height="44"
+                            Background="Transparent" BorderThickness="0"
+                            Cursor="Hand"
+                            Click="OnClose"
+                            shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="Bd" Background="Transparent">
+                                    <Path Data="M 1,1 L 11,11 M 11,1 L 1,11"
+                                          Stroke="{StaticResource BrTextMuted}"
+                                          StrokeThickness="1.5"
+                                          StrokeStartLineCap="Round"
+                                          StrokeEndLineCap="Round"
+                                          Width="12" Height="12"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Bd" Property="Background" Value="#C42B1C"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- ── Form ──────────────────────────────────────────────────── -->
+            <StackPanel Grid.Row="1" Margin="24,20,24,8">
+
+                <!-- Mod Name -->
+                <TextBlock Text="MOD NAME" FontSize="10" FontWeight="Bold"
+                           Foreground="{StaticResource BrTextDim}" Margin="0,0,0,6"/>
+                <TextBox x:Name="NameBox" Margin="0,0,0,20"
+                         TextChanged="OnTextChanged"
+                         ToolTip="Give this mod a recognisable name"/>
+
+                <!-- Runtime banner -->
+                <Border x:Name="RuntimeBanner"
+                        CornerRadius="5" Padding="12,8" Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal">
+                        <Border x:Name="RuntimeBadge" CornerRadius="4" Padding="8,3" Margin="0,0,10,0">
+                            <TextBlock x:Name="RuntimeBadgeText" FontSize="10" FontWeight="Bold"/>
+                        </Border>
+                        <TextBlock x:Name="RuntimeHintText" FontSize="12" VerticalAlignment="Center"
+                                   Foreground="{StaticResource BrTextMuted}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- ── Mono fields ─────────────────────────────────────── -->
+                <StackPanel x:Name="MonoFields">
+                    <TextBlock Text="ASSEMBLY (.dll)" FontSize="10" FontWeight="Bold"
+                               Foreground="{StaticResource BrTextDim}" Margin="0,0,0,6"/>
+                    <Grid Margin="0,0,0,18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="AssemblyBox" Grid.Column="0"
+                                 TextChanged="OnTextChanged"
+                                 ToolTip="Path to the managed mod DLL (e.g. MyMod.dll)"/>
+                        <Button Grid.Column="2" Style="{StaticResource GhostButton}"
+                                Padding="14,8" Click="OnBrowseAssembly">Browse…</Button>
+                    </Grid>
+
+                    <TextBlock Text="ENTRY POINT" FontSize="10" FontWeight="Bold"
+                               Foreground="{StaticResource BrTextDim}" Margin="0,0,0,6"/>
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Namespace" FontSize="11"
+                                       Foreground="{StaticResource BrTextMuted}" Margin="0,0,0,5"/>
+                            <TextBox x:Name="NamespaceBox" ToolTip="e.g.  MyMod.Core"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Class" FontSize="11"
+                                       Foreground="{StaticResource BrTextMuted}" Margin="0,0,0,5"/>
+                            <TextBox x:Name="ClassBox" ToolTip="e.g.  Loader"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="Method" FontSize="11"
+                                       Foreground="{StaticResource BrTextMuted}" Margin="0,0,0,5"/>
+                            <TextBox x:Name="MethodBox" ToolTip="e.g.  Init  (public static void, no params)"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <!-- ── IL2CPP fields ───────────────────────────────────── -->
+                <StackPanel x:Name="IL2CPPFields" Visibility="Collapsed">
+                    <TextBlock Text="NATIVE MOD DLL" FontSize="10" FontWeight="Bold"
+                               Foreground="{StaticResource BrTextDim}" Margin="0,0,0,6"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="DllBox" Grid.Column="0"
+                                 TextChanged="OnTextChanged"
+                                 ToolTip="Path to the x64 native mod DLL"/>
+                        <Button Grid.Column="2" Style="{StaticResource GhostButton}"
+                                Padding="14,8" Click="OnBrowseNativeDll">Browse…</Button>
+                    </Grid>
+                </StackPanel>
+
+                <!-- ── Notes ──────────────────────────────────────────── -->
+                <TextBlock Text="NOTES (optional)" FontSize="10" FontWeight="Bold"
+                           Foreground="{StaticResource BrTextDim}" Margin="0,18,0,6"/>
+                <TextBox x:Name="NotesBox"
+                         TextWrapping="Wrap" AcceptsReturn="True"
+                         Height="56" VerticalScrollBarVisibility="Auto"
+                         ToolTip="Personal notes — e.g. version info, conflicts, requirements"/>
+
+            </StackPanel>
+
+            <!-- ── Footer ────────────────────────────────────────────────── -->
+            <Border Grid.Row="2"
+                    BorderBrush="{StaticResource BrBorder}"
+                    BorderThickness="0,1,0,0"
+                    Padding="24,14">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource GhostButton}"
+                            Padding="20,8" Margin="0,0,8,0"
+                            Click="OnCancel">Cancel</Button>
+                    <Button x:Name="SaveBtn"
+                            Style="{StaticResource AccentButton}"
+                            Padding="20,8" IsEnabled="False"
+                            Click="OnSave">Add Mod</Button>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+    </Border>
+</Window>
