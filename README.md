@@ -214,20 +214,6 @@ User clicks Launch
 
 ---
 
-## Screenshots
-
-> Screenshots will be added here. Run the app and take them!
-
-<!--
-  Suggested shots:
-  - Main window with a game selected + mods list
-  - IL2CPP panel with green "Installed" badge
-  - ⚠ compatibility warning on a mod row
-  - Settings dialog
-  - About / More Tools dialog
--->
-
----
 
 ## Getting Started
 
