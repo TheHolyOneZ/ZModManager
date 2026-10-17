@@ -1,3 +1,5 @@
+> ⚠️ **ZModManager is currently unmaintained.** I may rebuild it in the future, but for now, check out [ZyMono](https://github.com/TheHolyOneZ/ZyMono), a more actively developed alternative focused on mod injection. For BepInEx/MelonLoader receiver support, the respective loader must already be installed.
+
 <div align="center">
 
 <img src="ZModManager/app_icon.png" width="120" alt="ZModManager Logo"/>
